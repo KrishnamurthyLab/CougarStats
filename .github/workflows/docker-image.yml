@@ -49,15 +49,25 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6.2.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: |
+            krishnamurthylab/cougarstats
+            ghcr.io/krishnamurthylab/cougarstats
+          tags |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
 
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v7.4.0
         with:
           context: .
-          push: true
-          tags: ['krishnamurthylab/cougarstats:latest', ${{ github.sha }}]
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
