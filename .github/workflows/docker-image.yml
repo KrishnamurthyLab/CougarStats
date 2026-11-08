@@ -50,7 +50,6 @@ jobs:
         uses: docker/metadata-action@v6.2.0
         with:
           images: |
-            krishnamurthylab/cougarstats
             ghcr.io/krishnamurthylab/cougarstats
           tags: |
             type=schedule
