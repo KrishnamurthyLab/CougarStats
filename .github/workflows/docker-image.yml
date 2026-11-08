@@ -26,6 +26,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Enable containerd image store
+        uses: docker/setup-docker-action@v5
+        with:
+          version: latest
+          daemon-config: |
+            {
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+
       - name: Log in to the Container registry
         uses: docker/login-action@v4.8.0
         with:
