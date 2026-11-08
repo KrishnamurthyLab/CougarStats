@@ -52,7 +52,7 @@ jobs:
           images: |
             krishnamurthylab/cougarstats
             ghcr.io/krishnamurthylab/cougarstats
-          tags |
+          tags: |
             type=schedule
             type=ref,event=branch
             type=ref,event=pr
