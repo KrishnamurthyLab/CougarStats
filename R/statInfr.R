@@ -12572,6 +12572,13 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
     }
 
     ### ------------ Kruskal-Wallis Outputs ------------------------------------------
+   
+     #### ---------------- Kruskal-Wallis Factor Table ----
+    output$kwFactorTable <- renderDT({
+      req(siValid())
+      req(kwResults()$is_valid)
+      PrintKWFactorTable()
+    })
     
     #### ---------------- Side-by-side Boxplot ----
     output$kwBoxplot <- renderPlot({

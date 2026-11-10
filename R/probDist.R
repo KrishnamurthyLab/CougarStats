@@ -1186,7 +1186,7 @@ probDistServer <- function(id) {
     
     HypGeo_iv$add_rule("popSuccessesHypGeo", sv_required())
     HypGeo_iv$add_rule("popSuccessesHypGeo", sv_integer())
-    HypGeo_iv$add_rule("popSuccessesHypGeo", sv_gt(0))
+    HypGeo_iv$add_rule("popSuccessesHypGeo", sv_gte(0))
     
     HypGeo_iv$add_rule("sampSizeHypGeo", sv_required())
     HypGeo_iv$add_rule("sampSizeHypGeo", sv_integer())
@@ -1673,7 +1673,7 @@ probDistServer <- function(id) {
       }
     }
     
-    normPlot <- function(normValue, normLines, popmean, variance, standDev, lineLabels, probType, plotLab){
+    normPlot <- function(normValue, normLines, popmean, variance, standDev, lineLabels, probType){
       req(pd_valid())
       
       x <- round(seq(from = -3, to = 3, by = 0.1), 2)
@@ -3111,8 +3111,8 @@ probDistServer <- function(id) {
             validate(
               need(input$popSizeHypGeo , "Population Size (N) must be a positive integer")%then%
                 need(input$popSizeHypGeo > 0 && input$popSizeHypGeo %% 1 == 0, "Population Size (N) must be a positive integer"),
-              need(input$popSuccessesHypGeo && input$popSuccessesHypGeo > 0, "Number of Successes in the Population (M) must be a positive integer")%then%
-                need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer"),
+              need(input$popSuccessesHypGeo && input$popSuccessesHypGeo >= 0, "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero.")%then%
+                need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero."),
               need(input$sampSizeHypGeo && input$sampSizeHypGeo > 0, "Sample Size (n) must be a positive integer")%then%
                 need(input$sampSizeHypGeo %% 1 == 0, "Sample Size (n) must be a positive integer"),
               need(input$xHypGeo , "Number of Successes in the Sample (x) must be a positive integer") %then%
@@ -3501,13 +3501,13 @@ probDistServer <- function(id) {
       req(input$goNegBin > 0)
         if(!pd_valid())
         {
-          if(!NegBinprob_iv$is_valid())
+          if(!NegBin_iv$is_valid())
           {
             validate(
               need(input$successNegBin , "Required Number of Successes (r) must be greater than zero.")%then%
                 need(input$successNegBin >= 0 && input$successNegBin %% 1 == 0, "Required Number of Successes (r) must be greater than zero."),
               need(input$successProbNegBin, "Probability of Success (p) must be between 0 and 1") %then%
-                need(input$successProbNegBin > 0 && input$successProbNegBin <= 1, "Probability of Success (p) must be 0 < p  ≤ 1"),
+                need(input$successProbNegBin > 0 && input$successProbNegBin <= 1, "Probability of Success (p) must be 0 < p ≤ 1"),
               need(input$xNegBin , "Number of Failures (x) prior to the rth success must be a positive integer.") %then%
                 need(input$xNegBin >= 0 && input$xNegBin %% 1 == 0, "Number of Failures (x) prior to the rth success must be a positive integer."),
               errorClass = "myClass")
@@ -4296,7 +4296,7 @@ probDistServer <- function(id) {
           studentTProb <- paste("P(X \\leq", tValue, ")")
         } else if(input$calcStudentT == "upperTail") {
           tValue <- input$tStudentT
-          tProb <- 1 - pt(tValue, df)
+          tProb <- pt(tValue, df, lower.tail = FALSE)
           studentTProb <- paste("P(X \\geq", tValue, ")")
         } else if(input$calcStudentT == "between") {
           validate(
