@@ -113,7 +113,10 @@ EXPOSE 3838
 # Marks the container unhealthy when the app stops answering page requests
 # (the page is cached after the first request, so the check is cheap).
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-  CMD curl -fsS -o /dev/null http://localhost:3838/ || exit 1
+    CMD curl -fsS -o /dev/null http://localhost:3838/ || exit 1
+
+LABEL org.opencontainers.image.source=https://github.com/krishnamurthylab/cougarstats
+LABEL org.opencontainers.image.description="The latest, containerized version of CougarStats."
 
 # The app runs as one single-threaded R process: every session shares it, so a
 # long computation in one session delays all others, and a crash ends every
