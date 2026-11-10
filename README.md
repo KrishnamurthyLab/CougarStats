@@ -4,7 +4,7 @@
 
 <img align="right" src="https://github.com/ashokkrish/CougarStats/blob/master/www/CougarStats.png" alt="rank" width="200" style="margin-top: 20px" />
 
-**CougarStats** is an open-source platform-independent browser-based interface for statistical data analysis. 
+**CougarStats** is an open-source platform-independent browser-based interface for statistical data analysis.
 
 You can use the app on our website: <https://www.cougarstats.ca/>
 
