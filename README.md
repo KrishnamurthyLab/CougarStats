@@ -73,7 +73,10 @@ Read more about [Getting Started with Docker](https://www.docker.com/get-started
 
 ### Current project members
 - [Jacie Bennett](https://github.com/jacie-b): Senior Developer
-- [Maryam Abou El Nasr](https://github.com/Maryaen): Senior Developer
+- Bryce Carson: Senior Developer
+- Murad Ahmed: Senior Developer
+- Kai Agoto: Senior Developer
+- Darren Law Yan Lun: Senior Developer
 
 ### Citation
 - Krishnamurthy, A., et al. (2026). _CougarStats_: An R Shiny app for statistical data analysis [Web application]. https://www.cougarstats.ca/
