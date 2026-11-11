@@ -24,7 +24,7 @@ then start the container:
 
 and navigate to 127.0.0.1:3838 using a browser of your choice to access a copy of CougarStats running locally on your machine.
 
-Read more about [Getting Started with Docker](https://www.docker.com/get-started/).   -->
+Read more about [Getting Started with Docker](https://www.docker.com/get-started/).  
 
 ### Deployment notes
 
@@ -32,7 +32,7 @@ Read more about [Getting Started with Docker](https://www.docker.com/get-started
 - Production runs on DigitalOcean App Platform with 1 shared vCPU and 2 GB RAM. To test a build under the same limits, run `docker run -d --restart unless-stopped --cpus 1 --memory 2g -p 3838:3838 <image>`. The image has a `HEALTHCHECK` on `/`.
 - The app idles at about 370 MB, and the largest Random Forest allowed (`RF_MAX_TRAIN_TREES` in `R/randomForest.R`) peaked at 0.9 GB in a 1 vCPU / 2 GB test container, so it fits. A container that runs out of memory is killed, which ends every session, so raise that limit only together with a bigger instance.
 - To stop one user's computation from blocking the others, run more than one replica of the container behind a proxy with sticky sessions (websocket support and a long read timeout), so each user stays on the same R process.
-- The base image is pinned to the tested R version (`rocker/shiny:4.6.1`). Change it deliberately when upgrading R.
+- The base image is pinned to the tested R version (`rocker/shiny:4.6.1`). Change it deliberately when upgrading R.   -->
 
 ## Key features
 
