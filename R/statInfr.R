@@ -1204,14 +1204,14 @@ statInfrUI <- function(id) {
                 
                 textAreaInput(
                   inputId     = ns("twoPopVarSamp1"),
-                  label       = strong("Sample 1 (e.g Class A test scores)"),
+                  label       = strong("Sample 1 (e.g. Class A test scores)"),
                   value       = "80, 54, 97, 76, 66, 87, 83, 91",
                   placeholder = "Enter values separated by a comma, space, or tab with decimals as points",
                   rows        = 3),
                 
                 textAreaInput(
                   inputId     = ns("twoPopVarSamp2"),
-                  label       = strong("Sample 2 (e.g Class B test scores)"),
+                  label       = strong("Sample 2 (e.g. Class B test scores)"),
                   value       = "45, 54, 67, 95, 100, 82, 83, 74",
                   placeholder = "Enter values separated by a comma, space, or tab with decimals as points",
                   rows        = 3)
@@ -1369,7 +1369,7 @@ statInfrUI <- function(id) {
                 inputId  = ns("normaprowrsRankSum"),
                 label    = strong("Method"), # A more descriptive label
                 choices  = c("Exact", "Normal approximation (for large samples)"),
-                selected = "Exact",
+                selected = "Normal approximation (for large samples)",
                 inline   = TRUE),
               conditionalPanel(
                 ns = ns,
@@ -1450,7 +1450,7 @@ statInfrUI <- function(id) {
                 inputId  = ns("normaprowrs"),
                 label    = strong("Method"), # A more descriptive label
                 choices  = c("Exact", "Normal approximation (for large samples)"),
-                selected = "Exact",
+                selected = "Normal approximation (for large samples)",
                 inline   = TRUE),
             ),
             conditionalPanel(
@@ -2244,7 +2244,7 @@ statInfrUI <- function(id) {
                                             ylab = "Differences (d)",
                                             includeFlip = FALSE), 
                                           plotOutput(ns("signedRankQQ")),
-                                          br(), br()
+                                          br()
                                         )
                                       )
                                     ),
@@ -7977,7 +7977,7 @@ statInfrServer <- function(id) {
             if (input$inferenceType2 == "Hypothesis Testing") {
               "The test statistic (t) will be undefined for sample data with a sample standard deviation of difference (sd) = 0."
             } else {
-              sprintf("The confidence interval results in (%s,%s) when the sample standard deviation of difference (sd) = 0.", GetDepMeansData()$dbar,
+              sprintf("The confidence interval results in (%s, %s) when the sample standard deviation of difference (sd) = 0.", GetDepMeansData()$dbar,
                       GetDepMeansData()$dbar)
             }
           ),
@@ -8059,8 +8059,8 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       if(!twopropdiffnaught_iv$is_valid()) {
         validate(
           need(input$propDiffNaught != "", "Hypothesized value of the Population Proportion Difference is required.") %then%
-            need(input$propDiffNaught >= -1, "Hypothesized value of the Population Proportion Difference must be between -1 and +1, inclusive.") %then%
-            need(input$propDiffNaught <= 1, "Hypothesized value of the Population Proportion Difference must be between -1 and +1, inclusive."),
+            need(input$propDiffNaught >= -1, "Hypothesized value of the Population Proportion Difference must be between -1 and +1.") %then%
+            need(input$propDiffNaught <= 1, "Hypothesized value of the Population Proportion Difference must be between -1 and +1."),
           errorClass = "myClass"
         )
       }
