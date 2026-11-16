@@ -4622,21 +4622,25 @@ statInfrServer <- function(id) {
       return(pvalOutput)
     }
     
-    PrintIndMeansSummaryTable <- function(data) {
+    PrintIndMeansSummaryTable <- function(data, showSD = TRUE) {
       df <- data.frame(
         "Sample Size" = c(data$n1, data$n2),
         "Sample Mean" = c(data$xbar1, data$xbar2),
-        "Sample Standard Deviation" = c(data$sd1, data$sd2),
-        "Sample Variance" = c(data$sd1^2, data$sd2^2),
-        row.names = c("Sample 1", "Sample 2"),
         check.names = FALSE
       )
       
-      colNames <- c("Sample Size", "Sample Mean", "Sample Standard Deviation", "Sample Variance")
+      if (showSD) {
+        df$`Sample Standard Deviation` <- c(data$sd1, data$sd2)
+        df$`Sample Variance` <- c(data$sd1^2, data$sd2^2)
+      }
+      
+      rownames(df) <- c("Sample 1", "Sample 2")
+      
+      colNames <- names(df)
       
       headers <- htmltools::withTags(table(
         class = 'display',
-        style = 'max-width: 600px; table-layout: fixed; width: 100%;',
+        style = 'width: auto; table-layout: auto;',
         thead(
           tr(
             th("",
@@ -4649,6 +4653,16 @@ statInfrServer <- function(id) {
         )
       ))
       
+      columnDefs <- list(
+        list(className = 'dt-center', targets = 0:ncol(df))
+      )
+      
+      if (showSD) {
+        columnDefs <- append(columnDefs, list(
+          list(width = '150px', targets = 3)
+        ))
+      }
+      
       datatable(df,
                 class = 'cell-border stripe',
                 container = headers,
@@ -4658,25 +4672,22 @@ statInfrServer <- function(id) {
                   ordering = FALSE,
                   searching = FALSE,
                   paging = FALSE,
-                  autoWidth = FALSE,
+                  autoWidth = TRUE,
                   scrollX = TRUE,
-                  columnDefs = list(
-                    list(className = 'dt-center', targets = 0:4),
-                    list(width = '150px', targets = 0:4)
-                  )
+                  columnDefs = columnDefs
                 ),
                 selection = "none",
                 escape = FALSE,
                 filter = "none"
       ) %>%
         formatRound(columns = 1, digits = 0) %>%
-        formatRound(columns = 2:4, digits = 4) %>%
+        formatRound(columns = if (showSD) 2:4 else 2, digits = 4) %>%
         formatStyle(columns = 0, fontWeight = 'bold')
     }
     
     showSummaryTable <- function() {
       showTable <-
-        (input$dataAvailability2 == "Enter Raw Data" && input$bothsigmaKnownRaw == "bothUnknown") ||
+        (input$dataAvailability2 == "Enter Raw Data") ||
         (input$dataAvailability2 == "Upload Data" && input$bothsigmaKnownUpload == "bothUnknown")
       return (showTable)
     }
@@ -9559,7 +9570,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       }
       
       tagList(
-        p(
+        
           withMathJax(
             conditionalPanel(
               ns = session$ns,
@@ -9567,7 +9578,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
                          || (input.dataAvailability2 == 'Enter Raw Data' && input.bothsigmaKnownRaw == 'bothKnown')
                          || (input.dataAvailability2 == 'Upload Data' && input.bothsigmaKnownUpload == 'bothKnown')",
               
-              uiOutput(session$ns('sigmaKnownCIFormula'))
+              uiOutput(session$ns('sigmaKnownCIResults'))
             ),
             conditionalPanel(
               ns = session$ns,
@@ -9591,7 +9602,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
                     cInt["UCL"]),
             br()
           )
-        )
+        
       )
     })
     
@@ -9634,7 +9645,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
     width = function() {GetPlotWidth(input[["indMeansBoxplot-Width"]], input[["indMeansBoxplot-WidthPx"]], ui = FALSE)}
     )
     
-    output$sigmaKnownCIFormula <- renderUI({
+    output$sigmaKnownCIResults <- renderUI({
       
       if (input$dataAvailability2 == 'Summarized Data') {
         data <- IndMeansSummData()
@@ -9645,10 +9656,52 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       }
       
       zInt <- IndMeansZInt()
+      alpha <- 1 - ConfLvl()
+      showTable <- showSummaryTable()
       
       tagList(
         p(
           withMathJax(
+            if (input$dataAvailability2 == 'Summarized Data') {
+              tagList(
+                "Given:",
+                br(), 
+                br(),
+                sprintf("\\( n_1 = %.0f \\)", data$n1),
+                br(),
+                sprintf("\\( \\bar{x}_1 = %.4f \\)", data$xbar1),
+                br(),
+                sprintf("\\( \\sigma_1 = %.4f \\)", data$sd1),
+                br(),
+                br(),
+                sprintf("\\( n_2 = %.0f \\)", data$n2),
+                br(),
+                sprintf("\\( \\bar{x}_2 = %.4f \\)", data$xbar2),
+                br(),
+                sprintf("\\( \\sigma_2 = %.4f \\)", data$sd2),
+                br(),
+                br())
+            },
+            if (showTable) {
+              list(
+                PrintIndMeansSummaryTable(data, showSD = FALSE),
+                br(),
+                br())
+            },
+            if(input$dataAvailability2 == 'Summarized Data' || input$dataAvailability2 == 'Enter Raw Data') {
+              tagList(
+                sprintf("For a %.0f%% Confidence Interval:", ConfLvl()*100),
+                br(),
+                sprintf("\\( \\alpha = 1 - %.2f = %.2f \\)", ConfLvl(), alpha),
+                br(),
+                sprintf("\\( z_{\\alpha/2} = z_{%g/2} = z_{%g} = %g \\)",
+                        alpha,
+                        alpha/2,
+                        zInt['Z Critical']),
+                br(),
+                br()
+              )
+            },
             sprintf("\\( \\displaystyle CI = (\\bar{x}_{1} - \\bar{x}_{2}) \\pm \\left( z_{\\alpha/2} \\sqrt{ \\dfrac{\\sigma_{1}^2}{n_{1}} + \\dfrac{\\sigma_{2}^2}{n_{2}} } \\right) \\)"),
             br(),
             br(),
