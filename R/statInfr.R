@@ -4688,7 +4688,8 @@ statInfrServer <- function(id) {
     showSummaryTable <- function() {
       showTable <-
         (input$dataAvailability2 == "Enter Raw Data") ||
-        (input$dataAvailability2 == "Upload Data" && input$bothsigmaKnownUpload == "bothUnknown")
+        (input$dataAvailability2 == "Summarized Data" && input$bothsigmaKnown == "bothUnknown") ||
+        (input$dataAvailability2 == "Upload Data")
       return (showTable)
     }
     
@@ -9752,7 +9753,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
             br(),
             if (showTable) {
               list(
-                PrintIndMeansSummaryTable(data),
+                PrintIndMeansSummaryTable(data, showSD = input$dataAvailability2 != 'Summarized Data'),
                 br(),
                 br())
             },
@@ -10956,23 +10957,37 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
     output$depMeansData <- renderDT({
       depData <- GetDepMeansData()
       
-      df_depData <- data.frame(depData$before, depData$after, depData$d, depData$d^2)
-      names(df_depData) <- c("Sample 1", "Sample 2", "<em>d</em> = (Sample 1 - Sample 2)", "<em>d</em><sup>2</sup>")
-      df_depData <- bind_rows(df_depData, summarise(df_depData, across(where(is.numeric), sum)))
-      rownames(df_depData)[nrow(df_depData)] <- "Totals"
+      df_depData <- data.frame(
+        " " = c(rep("", length(depData$before)), "Totals"),
+        "Sample 1" = c(depData$before, sum(depData$before)),
+        "Sample 2" = c(depData$after, sum(depData$after)),
+        "<em>d</em> = (Sample 1 - Sample 2)" = c(depData$d, sum(depData$d)),
+        "<em>d</em><sup>2</sup>" = c(depData$d^2, sum(depData$d^2)),
+        check.names = FALSE
+      )
       
-      datatable(round(df_depData, digits = 4),
-                options = list(dom = 'lftp',
-                               pageLength = 25,
-                               lengthMenu = list(c(-1, 10, 25, 50), c("All", "10", "25", "50")),
-                               ordering = FALSE
+      df_depData[2:5] <- lapply(df_depData[2:5], function(x) {
+        format(round(x, 4), nsmall = 0, trim = TRUE)
+      })
+      
+      datatable(df_depData,
+                rownames = FALSE,
+                options = list(
+                  dom = 'lftp',
+                  pageLength = 25,
+                  lengthMenu = list(c(-1, 10, 25, 50), c("All", "10", "25", "50")),
+                  ordering = FALSE,
+                  columnDefs = list(
+                    list(className = 'dt-center', targets = "_all")
+                  )
                 ),
                 escape = FALSE
-      ) %>% formatStyle(
-        names(df_depData),
-        target = 'row',
-        fontWeight = styleRow(dim(df_depData)[1], "bold")
-      )
+      ) %>%
+        formatStyle(
+          columns = 1,
+          target = 'row',
+          fontWeight = styleRow(nrow(df_depData), "bold")
+        )
     })
     
     #### ---------------- CI ----
