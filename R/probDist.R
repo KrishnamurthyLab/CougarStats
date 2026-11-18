@@ -305,7 +305,7 @@ probDistUI <- function(id) {
               inputId = ns("popSuccessesHypGeo"),
               label   = strong("Number of Successes in the Population (\\( M\\))"),
               value   = 5,
-              min     = 1,
+              min     = 0,
               step    = 1),
             
             numericInput(
@@ -3111,7 +3111,7 @@ probDistServer <- function(id) {
             validate(
               need(input$popSizeHypGeo , "Population Size (N) must be a positive integer")%then%
                 need(input$popSizeHypGeo > 0 && input$popSizeHypGeo %% 1 == 0, "Population Size (N) must be a positive integer"),
-              need(input$popSuccessesHypGeo && input$popSuccessesHypGeo >= 0, "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero.")%then%
+              need(!is.null(input$popSuccessesHypGeo) && input$popSuccessesHypGeo >= 0,  "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero.")%then%
                 need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero."),
               need(input$sampSizeHypGeo && input$sampSizeHypGeo > 0, "Sample Size (n) must be a positive integer")%then%
                 need(input$sampSizeHypGeo %% 1 == 0, "Sample Size (n) must be a positive integer"),
@@ -3125,8 +3125,8 @@ probDistServer <- function(id) {
             validate(
               need(input$popSizeHypGeo , "Population Size (N) must be a positive integer")%then%
                 need(input$popSizeHypGeo > 0 && input$popSizeHypGeo %% 1 == 0, "Population Size (N) must be a positive integer"),
-              need(input$popSuccessesHypGeo && input$popSuccessesHypGeo > 0, "Number of Successes in the Population (M) must be a positive integer")%then%
-                need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer"),
+              need(!is.null(input$popSuccessesHypGeo) && input$popSuccessesHypGeo >= 0,  "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero.")%then%
+                need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero."),
               need(input$sampSizeHypGeo && input$sampSizeHypGeo > 0, "Sample Size (n) must be a positive integer")%then%
                 need(input$sampSizeHypGeo %% 1 == 0, "Sample Size (n) must be a positive integer"),
               need(input$x1HypGeo , "Number of Successes in the Sample (x1) must be a positive integer") %then%
@@ -3139,8 +3139,8 @@ probDistServer <- function(id) {
           validate(
             need(input$popSizeHypGeo , "Population Size (N) must be a positive integer")%then%
               need(input$popSizeHypGeo > 0 && input$popSizeHypGeo %% 1 == 0, "Population Size (N) must be a positive integer"),
-            need(input$popSuccessesHypGeo && input$popSuccessesHypGeo > 0, "Number of Successes in the Population (M) must be a positive integer")%then%
-              need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer"),
+            need(!is.null(input$popSuccessesHypGeo) && input$popSuccessesHypGeo >= 0,  "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero.")%then%
+              need(input$popSuccessesHypGeo %% 1 == 0, "Number of Successes in the Population (M) must be a positive integer greater than or equal to zero."),
             need(input$sampSizeHypGeo && input$sampSizeHypGeo > 0, "Sample Size (n) must be a positive integer")%then%
               need(input$sampSizeHypGeo %% 1 == 0, "Sample Size (n) must be a positive integer"),
             errorClass = "myClass")
