@@ -1106,95 +1106,100 @@ statInfrUI <- function(id) {
               radioButtons(
                 inputId      = ns("dataAvailability3"),
                 label        = strong("Data"),
-                choiceValues = list("Summary",
-                                    "Variance",
+                choiceValues = list("Summarized Data",
                                     "Enter Raw Data",
                                     "Upload Data"),
                 choiceNames  = list(
-                  "\\( n_1,\\ n_2,\\ s_1,\\ s_2 \\)",
-                  "\\( n_1,\\ n_2,\\ s_1^2,\\ s_2^2 \\)",
+                  "Summarized Data",
                   "Enter Raw Data",
-                  "Upload Data"
-                ),
-                selected     = "Summary",
-                inline       = FALSE),
+                  "Upload Data"),
+                selected     = "Summarized Data",
+                inline       = TRUE),
 
-              ### ------------ Summary (n1, n2, s1, s2) ------------------------------------
+              ### ------------ Summarized Data ------------------------------------
               
               conditionalPanel(
                 ns = ns,
-                condition = "input.dataAvailability3 == 'Summary'",
+                condition = "input.dataAvailability3 == 'Summarized Data'",
+                
+                radioButtons(
+                  inputId      = ns("twoPopVarType"),
+                  label        = strong("Sample Variability Given As"),
+                  choiceValues = list("SD", "Variance"),
+                  choiceNames  = list(
+                    "\\(s_1,\\ s_2\\)",
+                    "\\(s_1^2,\\ s_2^2\\)"
+                  ),
+                  selected = "SD",
+                  inline = TRUE
+                ),
                 
                 withMathJax(
                   tagList(
                     numericInput(
-                      inputId = ns("twoPopSDSampSize1"),
-                      label   = HTML("<strong>Sample Size 1</strong> \\( (n_1) \\)"),
-                      value   = 12,
-                      min     = 1,
-                      step    = 1
+                      inputId = ns("twoPopSampSize1"),
+                      label = HTML("<strong>Sample Size 1</strong> \\( (n_1) \\)"),
+                      value = 12,
+                      min = 1,
+                      step = 1
                     ),
                     
                     numericInput(
-                      inputId = ns("twoPopSD1"),
-                      label   = HTML("<strong>Sample Standard Deviation 1</strong> \\( (s_1) \\)"),
-                      value   = 3,
-                      min     = 1,
-                      step    = 0.01
-                    ),
-                    
-                    numericInput(
-                      inputId = ns("SDSampleSize2"),
-                      label   = HTML("<strong>Sample Size 2</strong> \\( (n_2) \\)"),
-                      value   = 18,
-                      min     = 1,
-                      step    = 1
-                    ),
-                    
-                    numericInput(
-                      inputId = ns("twoPopSD2"),
-                      label   = HTML("<strong>Sample Standard Deviation 2</strong> \\( (s_2) \\)"),
-                      value   = 4.8,
-                      min     = 1,
-                      step    = 0.01
+                      inputId = ns("twoPopSampSize2"),
+                      label = HTML("<strong>Sample Size 2</strong> \\( (n_2) \\)"),
+                      value = 18,
+                      min = 1,
+                      step = 1
                     )
-                  ))), #summary,
-              
-              ### ------------ Variance (n1, s1^2, n2, s2^2) ------------------------------------ 
-              
-              conditionalPanel(
-                ns = ns,
-                condition = "input.dataAvailability3 == 'Variance'",
-                withMathJax(
-                  tagList(
-                    numericInput(
-                      inputId = ns("twoPopVarSampSize1"),
-                      label   = HTML("<strong>Sample Size 1</strong> \\( (n_1) \\)"),
-                      value   = 12,
-                      min     = 1,
-                      step    = 1),
-                    
-                    numericInput(
-                      inputId = ns("twoPopVarSampleVar1"),
-                      label   = HTML("<strong>Sample Variance 1 </strong>\\( (s_1^2) \\)"),
-                      value   = 9,
-                      min     = 1,
-                      step    = 0.01),
-                    
-                    numericInput(
-                      inputId = ns("twoPopVarSampSize2"),
-                      label   = HTML("<strong>Sample Size 2</strong> \\( (n_2) \\)"),
-                      value   = 18,
-                      min     = 1,
-                      step    = 1),
-                    
-                    numericInput(
-                      inputId = ns("twoPopVarSampleVar2"),
-                      label   = HTML("<strong>Sample Variance 2</strong> \\( (s_2^2) \\)"),
-                      value   = 23.04,
-                      min     = 1,
-                      step    = 0.01)
-                  ))), # variance
+                  )
+                ),
+                
+                conditionalPanel(
+                  ns = ns,
+                  condition = "input.twoPopVarType == 'SD'",
+                      
+                  withMathJax(
+                    tagList(
+                      numericInput(
+                        inputId = ns("twoPopSD1"),
+                        label   = HTML("<strong>Sample Standard Deviation 1</strong> \\( (s_1) \\)"),
+                        value   = 3,
+                        min     = 1,
+                        step    = 0.01
+                      ),
+                        
+                      numericInput(
+                        inputId = ns("twoPopSD2"),
+                        label   = HTML("<strong>Sample Standard Deviation 2</strong> \\( (s_2) \\)"),
+                        value   = 4.8,
+                        min     = 1,
+                        step    = 0.01
+                      )
+                ))), # SD
+                
+                conditionalPanel(
+                  ns = ns,
+                  condition = "input.twoPopVarType == 'Variance'",
+                  
+                  withMathJax(
+                    tagList(
+                      numericInput(
+                        inputId = ns("twoPopVarSampleVar1"),
+                        label = HTML("<strong>Sample Variance 1</strong> \\( (s_1^2) \\)"),
+                        value = 9,
+                        min = 0,
+                        step = 0.01
+                      ),
+                      
+                      numericInput(
+                        inputId = ns("twoPopVarSampleVar2"),
+                        label   = HTML("<strong>Sample Variance 2</strong> \\( (s_2^2) \\)"),
+                        value   = 23.04,
+                        min     = 1,
+                        step    = 0.01)
+                    )))
+                  
+                ), # summarized data,
               
               ### ------------- Raw Data ---------------------------------------------------------
               
@@ -2904,7 +2909,8 @@ statInfrServer <- function(id) {
     twoprop_iv <- InputValidator$new()
     twopropht_iv <- InputValidator$new()
     twopropdiffnaught_iv <- InputValidator$new()
-    twopopvarsum_iv <- InputValidator$new()
+    twopopvarn_iv <- InputValidator$new()
+    twopopvarsd_iv <- InputValidator$new()
     twopopvar_iv <- InputValidator$new()
     twopopvarraw_iv <- InputValidator$new()
     twopopvarnaught_iv <- InputValidator$new()
@@ -3538,39 +3544,28 @@ statInfrServer <- function(id) {
     twopropdiffnaught_iv$add_rule("propDiffNaught", sv_gte(-1, message = "Value must be between -1 and 1 (inclusive)."))
     twopropdiffnaught_iv$add_rule("propDiffNaught", sv_lte(1, message = "Value must be between -1 and 1 (inclusive)."))
     
-    # twoPopSDSampSize1
-    twopopvarsum_iv$add_rule("twoPopSDSampSize1", sv_required())
-    twopopvarsum_iv$add_rule("twoPopSDSampSize1", sv_integer())
-    twopopvarsum_iv$add_rule("twoPopSDSampSize1", sv_gt(1))
+    # Sample sizes (shared)
+    twopopvarn_iv$add_rule("twoPopSampSize1", sv_required())
+    twopopvarn_iv$add_rule("twoPopSampSize1", sv_integer())
+    twopopvarn_iv$add_rule("twoPopSampSize1", sv_gt(1))
     
-    # SDSampleSize2
-    twopopvarsum_iv$add_rule("SDSampleSize2", sv_required())
-    twopopvarsum_iv$add_rule("SDSampleSize2", sv_integer())
-    twopopvarsum_iv$add_rule("SDSampleSize2", sv_gt(1))
-    
-    # twoPopSD1
-    twopopvarsum_iv$add_rule("twoPopSD1", sv_required())
-    twopopvarsum_iv$add_rule("twoPopSD1", sv_gt(0))
+    twopopvarn_iv$add_rule("twoPopSampSize2", sv_required())
+    twopopvarn_iv$add_rule("twoPopSampSize2", sv_integer())
+    twopopvarn_iv$add_rule("twoPopSampSize2", sv_gt(1))
     
     # twoPopSD1
-    twopopvarsum_iv$add_rule("twoPopSD2", sv_required())
-    twopopvarsum_iv$add_rule("twoPopSD2", sv_gt(0))
+    twopopvarsd_iv$add_rule("twoPopSD1", sv_required())
+    twopopvarsd_iv$add_rule("twoPopSD1", sv_gt(0))
     
-    # Two Std Dev n1
-    twopopvar_iv$add_rule("twoPopVarSampSize1", sv_required())
-    twopopvar_iv$add_rule("twoPopVarSampSize1", sv_integer())
-    twopopvar_iv$add_rule("twoPopVarSampSize1", sv_gt(1))
-    
-    # Two Std Dev n2
-    twopopvar_iv$add_rule("twoPopVarSampSize2", sv_required())
-    twopopvar_iv$add_rule("twoPopVarSampSize2", sv_integer())
-    twopopvar_iv$add_rule("twoPopVarSampSize2", sv_gt(1))
-    
-    # Two Std Dev s1^2
+    # twoPopSD1
+    twopopvarsd_iv$add_rule("twoPopSD2", sv_required())
+    twopopvarsd_iv$add_rule("twoPopSD2", sv_gt(0))
+
+    # s1^2
     twopopvar_iv$add_rule("twoPopVarSampleVar1", sv_required())
     twopopvar_iv$add_rule("twoPopVarSampleVar1", sv_gt(0))
     
-    # Two Std Dev s2^2
+    # s2^2
     twopopvar_iv$add_rule("twoPopVarSampleVar2", sv_required())
     twopopvar_iv$add_rule("twoPopVarSampleVar2", sv_gt(0))
     
@@ -3906,13 +3901,19 @@ statInfrServer <- function(id) {
                                       input$popuParameters == 'Population Proportions' &&
                                       input$inferenceType2 == 'Hypothesis Testing'))
     
-    twopopvarsum_iv$condition(~ isTRUE(input$siMethod == '2' &&
+    twopopvarn_iv$condition(~ isTRUE(input$siMethod == '2' &&
+                                       input$popuParameters == 'Two Population Variances' &&
+                                       input$dataAvailability3 == 'Summarized Data'))
+    
+    twopopvarsd_iv$condition(~ isTRUE(input$siMethod == '2' &&
                                          input$popuParameters == 'Two Population Variances' &&
-                                         input$dataAvailability3 == 'Summary'))
+                                         input$dataAvailability3 == 'Summarized Data' &&
+                                         input$twoPopVarType == 'SD'))
     
     twopopvar_iv$condition(~ isTRUE(input$siMethod == '2' &&
                                       input$popuParameters == 'Two Population Variances' &&
-                                      input$dataAvailability3 == 'Variance'))
+                                      input$dataAvailability3 == 'Summarized Data' &&
+                                      input$twoPopVarType == 'Variance'))
     
     twopopvarraw_iv$condition(~ isTRUE(input$siMethod == '2' &&
                                          input$popuParameters == 'Two Population Variances' &&
@@ -4009,7 +4010,8 @@ statInfrServer <- function(id) {
     si_iv$add_validator(twoprop_iv)
     si_iv$add_validator(twopropht_iv)
     si_iv$add_validator(twopropdiffnaught_iv)
-    si_iv$add_validator(twopopvarsum_iv)
+    si_iv$add_validator(twopopvarn_iv)
+    si_iv$add_validator(twopopvarsd_iv)
     si_iv$add_validator(twopopvar_iv)
     si_iv$add_validator(twopopvarraw_iv)
     si_iv$add_validator(twopopvarnaught_iv)
@@ -4081,7 +4083,8 @@ statInfrServer <- function(id) {
     twoprop_iv$enable()
     twopropht_iv$enable()
     twopropdiffnaught_iv$enable()
-    twopopvarsum_iv$enable()
+    twopopvarn_iv$enable()
+    twopopvarsd_iv$enable()
     twopopvar_iv$enable()
     twopopvarraw_iv$enable()
     twopopvarnaught_iv$enable()
@@ -4768,19 +4771,15 @@ statInfrServer <- function(id) {
       return(dat)
     })
     
-    TwoPopVarCI <- function(n1, sd1, n2, sd2, conf_level = 0.95, is_variance) {
+    TwoPopVarCI <- function(n1, sd1, n2, sd2, conf_level = 0.95) {
       df1 <- n1-1
       df2 <- n2-1
       
       alpha <- 1 - conf_level
       
-      if (is_variance) {
-        var1 <- sd1
-        var2 <- sd2
-      } else {  # else summary, so sd's need to be ^2
-        var1 <- sd1^2
-        var2 <- sd2^2
-      }
+      var1 <- sd1^2
+      var2 <- sd2^2
+      
       F_stat <- var1 / var2
       
       F_critical_lower <- qf(alpha/2, df2, df1)
@@ -4805,13 +4804,8 @@ statInfrServer <- function(id) {
       crit_upper <- 0
       crit_val <- 0
       
-      if (is_variance) {
-        var1 <- sd1
-        var2 <- sd2
-      } else {  # else summary, so sd's need to be ^2
-        var1 <- sd1^2
-        var2 <- sd2^2
-      }
+      var1 <- sd1^2
+      var2 <- sd2^2
       
       F_stat <- (var1/var2) / naught
       
@@ -4846,18 +4840,17 @@ statInfrServer <- function(id) {
       ))
     }
     
-    printTwoPopVarGivens <- function (data, is_variance) {
+    printTwoPopVarGivens <- function(data, is_variance) {
       if (is_variance) {
         tagList(
           sprintf("\\(n_1 = %d\\)", data$n1),
           br(),
-          sprintf("\\(s_1^2 = %.4f\\)", data$sd1),
+          sprintf("\\(s_1^2 = %.4f\\)", data$sd1^2),
           br(), br(),
           sprintf("\\(n_2 = %d\\)", data$n2),
           br(),
-          sprintf("\\(s_2^2 = %.4f\\)", data$sd2),
-          br(),
-          br(),
+          sprintf("\\(s_2^2 = %.4f\\)", data$sd2^2),
+          br(), br()
         )
       } else {
         tagList(
@@ -4872,7 +4865,7 @@ statInfrServer <- function(id) {
           sprintf("\\(s_2 = %.4f\\)", data$sd2),
           br(),
           sprintf("\\(s_2^2 = %.4f\\)", data$sd2^2),
-          br(), br(),
+          br(), br()
         )
       }
     }
@@ -4935,17 +4928,17 @@ statInfrServer <- function(id) {
       ))
     }
     
-    printFStat <- function(sd1, sd2, F_statistic, is_variance, is_HT = FALSE, naught = 1) {
-      var1 <- if (is_variance) sd1 else sd1^2
-      var2 <- if (is_variance) sd2 else sd2^2
-      ratio <- var1/var2
+    printFStat <- function(sd1, sd2, F_statistic, is_HT = FALSE, naught = 1) {
+      var1 <- sd1^2
+      var2 <- sd2^2
+      ratio <- var1 / var2
       
       if (is_HT) {
         tagList(
           sprintf("\\(\\dfrac{s_1^2}{s_2^2}\\)"),
           sprintf("\\(= \\dfrac{%.4f}{%.4f}\\)", var1, var2),
           sprintf("\\(= %.4f\\)", ratio),
-          br(), 
+          br(),
           br(),
           sprintf("\\(F = \\dfrac{(s_1^2/s_2^2)}{(\\sigma_1^2/\\sigma_2^2)_0}\\)"),
           sprintf("\\(= \\dfrac{%.4f}{%.4f}\\)", ratio, naught),
@@ -4954,7 +4947,8 @@ statInfrServer <- function(id) {
           br()
         )
       } else {
-        sprintf("\\(\\dfrac{s_1^2}{s_2^2} = \\dfrac{%.4f}{%.4f} = %.4f\\)", var1, var2, F_statistic)
+        sprintf("\\(\\dfrac{s_1^2}{s_2^2} = \\dfrac{%.4f}{%.4f} = %.4f\\)",
+                var1, var2, ratio)
       }
     }
     
@@ -7134,16 +7128,17 @@ statInfrServer <- function(id) {
       
       dat <- list()
       
-      if (input$dataAvailability3 == "Summary") {
-        dat$n1 <- input$twoPopSDSampSize1
-        dat$n2 <- input$SDSampleSize2
-        dat$sd1 <- input$twoPopSD1
-        dat$sd2 <- input$twoPopSD2
-      } else if (input$dataAvailability3 == "Variance") {
-        dat$n1 <- input$twoPopVarSampSize1
-        dat$n2 <- input$twoPopVarSampSize2
-        dat$sd1 <- input$twoPopVarSampleVar1
-        dat$sd2 <- input$twoPopVarSampleVar2
+      if (input$dataAvailability3 == "Summarized Data") {
+        dat$n1 <- input$twoPopSampSize1
+        dat$n2 <- input$twoPopSampSize2
+        
+        if (input$twoPopVarType == "SD") {
+          dat$sd1 <- input$twoPopSD1
+          dat$sd2 <- input$twoPopSD2
+        } else if (input$twoPopVarType == "Variance") {
+          dat$sd1 <- sqrt(input$twoPopVarSampleVar1)
+          dat$sd2 <- sqrt(input$twoPopVarSampleVar2)
+        }
       }
       
       return(dat)
@@ -7204,7 +7199,7 @@ statInfrServer <- function(id) {
         data <- GetTwoPopVarRawData()
       } else if(input$dataAvailability3 == 'Upload Data') {
         data <- GetTwoPopVarUploadData()
-      } else { # Summary or Variance
+      } else { # Summarized Data
         data <- GetTwoPopVarData()
       }
       return(data)
@@ -8068,16 +8063,24 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       
       #### ---------------- Two Pop Variance Validation
       
-      if(!twopopvarsum_iv$is_valid()) {
+      if (!twopopvarn_iv$is_valid()) {
         validate(
-          need(input$twoPopSDSampSize1, "Sample size 1 is required.") %then%
-            need(input$twoPopSDSampSize1 %% 1 == 0 && input$twoPopSDSampSize1 > 1, "Sample size 1 must be an integer greater than one."),
+          need(input$twoPopSampSize1, "Sample size 1 is required.") %then%
+            need(input$twoPopSampSize1 %% 1 == 0 && input$twoPopSampSize1 > 1,
+                 "Sample size 1 must be an integer greater than one."),
           
+          need(input$twoPopSampSize2, "Sample size 2 is required.") %then%
+            need(input$twoPopSampSize2 %% 1 == 0 && input$twoPopSampSize2 > 1,
+                 "Sample size 2 must be an integer greater than one."),
+          
+          errorClass = "myClass"
+        )
+      }
+      
+      if(!twopopvarsd_iv$is_valid()) {
+        validate(
           need(input$twoPopSD1, "Sample standard deviation 1 is required.") %then%
             need(input$twoPopSD1 > 0, "Standard deviation for sample 1 must be greater than zero."),
-          
-          need(input$SDSampleSize2, "Sample size 2 is required.") %then%
-            need(input$SDSampleSize2 %% 1 == 0 && input$SDSampleSize2 > 1, "Sample size 2 must be an integer greater than one."),
           
           need(input$twoPopSD2, "Sample standard deviation 2 is required.") %then%
             need(input$twoPopSD2 > 0, "Standard deviation for sample 2 must be greater than zero."),
@@ -8087,17 +8090,10 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       
       if (!twopopvar_iv$is_valid()) {
         validate(
-          need(input$twoPopVarSampSize1, "Sample size 1 is required.") %then%
-            need(input$twoPopVarSampSize1 %% 1 == 0 && input$twoPopVarSampSize1 > 1,
-                 "Sample size 1 must be an integer greater than one."),
           
           need(input$twoPopVarSampleVar1, "Sample variance 1 is required.") %then%
             need(input$twoPopVarSampleVar1 > 0,
                  "Variance for sample 1 must be greater than zero."),
-          
-          need(input$twoPopVarSampSize2, "Sample size 2 is required.") %then%
-            need(input$twoPopVarSampSize2 %% 1 == 0 && input$twoPopVarSampSize2 > 1,
-                 "Sample size 2 must be an integer greater than one."),
           
           need(input$twoPopVarSampleVar2, "Sample variance 2 is required.") %then%
             need(input$twoPopVarSampleVar2 > 0,
@@ -11968,9 +11964,9 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       req(siValid())
       
       data <- GetAllTwoPopVarData()
-      is_variance <- (input$dataAvailability3 == 'Variance')
+      is_variance <- (input$twoPopVarType == "Variance")
       
-      CI <- TwoPopVarCI(data$n1, data$sd1, data$n2, data$sd2, ConfLvl(), is_variance)
+      CI <- TwoPopVarCI(data$n1, data$sd1, data$n2, data$sd2, ConfLvl())
       df1 <- data$n1 - 1
       df2 <- data$n2 - 1
       conf_percent <- ConfLvl() * 100
@@ -12004,7 +12000,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
           br(), br(),
           
           # F stat calculation
-          printFStat(data$sd1, data$sd2, CI$F_statistic, is_variance),
+          printFStat(data$sd1, data$sd2, CI$F_statistic),
           
           br(), br(),
           # formula for CI
@@ -12036,7 +12032,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       data <- GetAllTwoPopVarData()
       hyp_labels <- TwoPopVarHypInfo()
       
-      is_variance <- (input$dataAvailability3 == 'Variance')
+      is_variance <- (input$twoPopVarType == 'Variance')
       sig_lvl <- SigLvl()
       alt_hyp <- hyp_labels$alternative
       
@@ -12065,7 +12061,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
           printTwoPopVarGivens(data, is_variance),
           
           # print F stat calc
-          printFStat(data$sd1, data$sd2, HT$F_statistic, is_variance, is_HT = TRUE, input$twoPopVarNaught),
+          printFStat(data$sd1, data$sd2, HT$F_statistic, is_HT = TRUE, naught = input$twoPopVarNaught),
           br(),
           
           # print P value method
@@ -13953,13 +13949,11 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
       updateNumericInput(session, "numTrials1", value = 300)
       updateNumericInput(session, "numSuccesses2", value = 111)
       updateNumericInput(session, "numTrials2", value = 300)
-      updateNumericInput(session, "twoPopSDSampSize1", value = 12)
+      updateNumericInput(session, "twoPopSampSize1", value = 12)
       updateNumericInput(session, "twoPopSD1", value = 3)
-      updateNumericInput(session, "SDSampleSize2", value = 18)
+      updateNumericInput(session, "twoPopSampSize2", value = 18)
       updateNumericInput(session, "twoPopSD2", value = 4.8)
-      updateNumericInput(session, "twoPopVarSampSize1", value = 12)
       updateNumericInput(session, "twoPopVarSampleVar1", value = 9)
-      updateNumericInput(session, "twoPopVarSampSize2", value = 18)
       updateNumericInput(session, "twoPopVarSampleVar2", value = 23.04)
       updateNumericInput(session, "twoPopVarNaught", value = 1)
       updateNumericInput(session, "indMeansMuNaught", value = 0)
