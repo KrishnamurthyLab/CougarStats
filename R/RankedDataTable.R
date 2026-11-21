@@ -125,7 +125,7 @@ signedRankDisplayData <- function(data) {
     dplyr::select(
       `Sample 1` = Sample1,
       `Sample 2` = Sample2,
-      Difference = Value,
+      `Difference = (Sample 1 - Sample 2)` = Value,
       `Absolute Difference` = AbsDifference,
       Rank = Rank,
       `Signed Rank` = SignedRank
