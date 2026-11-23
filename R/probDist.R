@@ -2556,9 +2556,11 @@ probDistServer <- function(id) {
               binomVal <- round(pbinom(binom_x,binom_n,binom_p,lower.tail = FALSE), 4)
             }
             else if(input$calcBinom == 'lessThan'){
-              binomProb <- paste("P(X \\lt ", binom_x, ")") 
-              binomForm <- paste("\\sum_{x = 0}^{", binom_x - 1, "} \\binom{", binom_n, "}{x}", binom_p, "^x (1-", binom_p, ")^{", binom_n, "- x}")
-              binomVal <- round(pbinom(binom_x - 1,binom_n,binom_p,lower.tail = TRUE), 4)
+              binomProb <- paste("P(X \\lt ", binom_x, ")")
+              upperLimit <- max(0, binom_x - 1)
+              
+              binomForm <- paste("\\sum_{x = 0}^{", upperLimit, "} \\binom{", binom_n, "}{x}", binom_p, "^x (1-", binom_p, ")^{", binom_n, "- x}")
+              binomVal <- if(binom_x <= 0) 0 else round(pbinom(binom_x - 1, binom_n, binom_p, lower.tail = TRUE), 4)
             }
           }
           else if(input$calcBinom == 'between')
@@ -2895,9 +2897,11 @@ probDistServer <- function(id) {
               poissVal <- round(ppois(poisson_x,poisson_lambda,lower.tail = FALSE), 4)
             }
             else if(input$calcPoisson == 'lessThan'){
-              poissProb <- paste("P(X \\lt ", poisson_x, ")") 
-              poissForm <- paste("\\sum_{x = 0}^{", poisson_x - 1, "} \\dfrac{e^{-", poisson_lambda, "}", poisson_lambda, "^x}{x!}")
-              poissVal <- round(ppois(poisson_x - 1,poisson_lambda,lower.tail = TRUE), 4)
+              poissProb <- paste("P(X \\lt ", poisson_x, ")")
+              upperLimit <- max(0, poisson_x - 1)
+              
+              poissForm <- paste("\\sum_{x = 0}^{", upperLimit, "} \\dfrac{e^{-", poisson_lambda, "}", poisson_lambda, "^x}{x!}")
+              poissVal <- if(poisson_x <= 0) 0 else round(ppois(poisson_x - 1, poisson_lambda, lower.tail = TRUE), 4)
             }
           }
           else if(input$calcPoisson == 'between')
@@ -3200,8 +3204,11 @@ probDistServer <- function(id) {
             }
             else if(input$calcHypGeo == 'lessThan'){
               HypGeoProb <- paste("P(X \\lt ", xHypGeo, ")")
-              HypGeoForm <- paste("\\sum_{x ", max(0, sampSizeHypGeo + popSuccessesHypGeo - popSizeHypGeo), "}^{", xHypGeo - 1, "} \\dfrac{\\binom{", popSuccessesHypGeo, "}{x} \\binom{", (popSizeHypGeo - popSuccessesHypGeo), "}{", sampSizeHypGeo,  "- x}}{\\binom{", popSizeHypGeo, "}{", sampSizeHypGeo, "}}")
-              HypGeoVal <- round(phyper(xHypGeo - 1, popSuccessesHypGeo, (popSizeHypGeo - popSuccessesHypGeo), sampSizeHypGeo, lower.tail = TRUE), 4)
+              upperLimit <- max(0, xHypGeo - 1)
+              
+              HypGeoForm <- paste("\\sum_{x = ", max(0, sampSizeHypGeo + popSuccessesHypGeo - popSizeHypGeo), "}^{", upperLimit, "} \\dfrac{\\binom{", popSuccessesHypGeo, "}{x} \\binom{", (popSizeHypGeo - popSuccessesHypGeo), "}{", sampSizeHypGeo,  "- x}}{\\binom{", popSizeHypGeo, "}{", sampSizeHypGeo, "}}")
+              
+              HypGeoVal <- if(xHypGeo <= 0) 0 else round(phyper(xHypGeo - 1, popSuccessesHypGeo, (popSizeHypGeo - popSuccessesHypGeo), sampSizeHypGeo, lower.tail = TRUE), 4)
             }
           }
           else if(input$calcHypGeo == 'between')

@@ -1124,7 +1124,7 @@ statInfrUI <- function(id) {
                 
                 radioButtons(
                   inputId      = ns("twoPopVarType"),
-                  label        = strong("Sample Variability Given As"),
+                  label        = strong("Sample variability given as"),
                   choiceValues = list("SD", "Variance"),
                   choiceNames  = list(
                     "\\(s_1,\\ s_2\\)",
@@ -4452,7 +4452,7 @@ statInfrServer <- function(id) {
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       }
       else
       {
@@ -4911,7 +4911,7 @@ statInfrServer <- function(id) {
     
     twoPopVarOutputText <- function(HT, sig_lvl) {
       if (!HT$reject_null) {
-        region <- "acceptance"
+        region <- "non-rejection"
         isWord <- "isn't"
       } else {
         region <- "rejection"
@@ -5324,7 +5324,7 @@ statInfrServer <- function(id) {
       } else {
         pValSymbol <- "\\gt"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
         suffEvidence <- "isn't"
       }
       
@@ -5852,7 +5852,7 @@ statInfrServer <- function(id) {
       } else {
         pValSymbol <- "\\gt"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
         suffEvidence <- "isn't"
       }
       
@@ -9080,7 +9080,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
                              " At \\(\\alpha = %0.2f\\), there is %s evidence to conclude that",
                              " \\(\\sigma %s %s\\)",
                              " (equivalently, \\(\\sigma^2 %s \\left(%s\\right)^2\\))."),
-                      if (accept) "acceptance" else "rejection",
+                      if (accept) "non-rejection" else "rejection",
                       if (accept) "fail to reject" else "reject",
                       significanceLevel,
                       if (accept) "insufficient" else "sufficient",
@@ -9126,7 +9126,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         p(tags$b("Conclusion:")),
         {
           if (accept) {
-            conclusion <- sprintf("At \\(\\alpha = %0.2f\\), since the test statistic falls in the acceptance region we fail to reject \\(H_0\\) and conclude that there is not enough statistical evidence to support that \\(\\sigma %s %s\\).",
+            conclusion <- sprintf("At \\(\\alpha = %0.2f\\), since the test statistic falls in the non-rejection region we fail to reject \\(H_0\\) and conclude that there is not enough statistical evidence to support that \\(\\sigma %s %s\\).",
                                   SigLvl(),
                                   altHypString,
                                   input$hypStdDeviation)
@@ -9356,7 +9356,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       } else {
         pvalSymbol <- "\\leq"
         suffEvidence <- "is"
@@ -9907,7 +9907,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       }
       else
       {
@@ -10421,7 +10421,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       }
 
       #no ties in data for p value
@@ -11083,7 +11083,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       } else {
         pvalSymbol <- "\\leq"
         suffEvidence <- "is"
@@ -11301,7 +11301,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       }
       
       sample1_data <- data_ranked$Sample1
@@ -11671,7 +11671,7 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
         pvalSymbol <- "\\gt"
         suffEvidence <- "isn't"
         reject <- "do not reject"
-        region <- "acceptance"
+        region <- "non-rejection"
       }
       else
       {
