@@ -921,14 +921,14 @@ statInfrUI <- function(id) {
                 
                 textAreaInput(
                   inputId     = ns("before"),
-                  label       = strong("Sample 1 (e.g. Before, Pre-Treatment, Baseline)"),
+                  label       = strong("First measurement (e.g. Before, Pre-Treatment, Baseline)"),
                   value       = "484, 478, 492, 444, 436, 398, 464, 476",
                   placeholder = "Enter values separated by a comma, space, or tab with decimals as points",
                   rows        = 3),
                 
                 textAreaInput(
                   inputId     = ns("after"),
-                  label       = strong("Sample 2 (e.g. After, Post-Treatment, Follow-Up)"),
+                  label       = strong("Second measurement (e.g. After, Post-Treatment, Follow-Up)"),
                   value       = "488, 478, 480, 426, 440, 410, 458, 460",
                   placeholder = "Enter values separated by a comma, space, or tab with decimals as points",
                   rows        = 3)
@@ -967,14 +967,14 @@ statInfrUI <- function(id) {
 
                 selectizeInput(
                   inputId = ns("depMeansUplSample1"),
-                  label   = strong("Column for Sample 1 (e.g. Before, Pre-Treatment, Baseline)"),
+                  label   = strong("Column for First measurement (e.g. Before, Pre-Treatment, Baseline)"),
                   choices = c(""),
                   options = list(placeholder = 'Select a column',
                                  onInitialize = I('function() { this.setValue(""); }'))),
                 
                 selectizeInput(
                   inputId = ns("depMeansUplSample2"),
-                  label   = strong("Column for Sample 2 (e.g. After, Post-Treatment, Follow-Up)"),
+                  label   = strong("Column for Second measurement (e.g. After, Post-Treatment, Follow-Up)"),
                   choices = c(""),
                   options = list(placeholder = 'Select a column',
                                  onInitialize = I('function() { this.setValue(""); }'))),
@@ -1003,14 +1003,14 @@ statInfrUI <- function(id) {
                 
                 textAreaInput(
                   inputId     = ns("signedRankRaw1"),
-                  label       = strong("Sample 1 (e.g. Before, Pre-Treatment, Baseline)"),
+                  label       = strong("First measurement (e.g. Before, Pre-Treatment, Baseline)"),
                   value       = "484, 478, 492, 444, 436, 398, 464, 476",
                   placeholder = "Enter values separated by a comma, space, or tab with decimals as points",
                   rows        = 3),
                 
                 textAreaInput(
                   inputId     = ns("signedRankRaw2"),
-                  label       = strong("Sample 2 (e.g. After, Post-Treatment, Follow-Up)"),
+                  label       = strong("Second measurement (e.g. After, Post-Treatment, Follow-Up)"),
                   value       = "488, 478, 480, 426, 440, 410, 458, 460",
                   placeholder = "Enter values separated by a comma, space, or tab with decimals as points",
                   rows        = 3),
@@ -1049,14 +1049,14 @@ statInfrUI <- function(id) {
 
                 selectizeInput(
                   inputId = ns("signedRankUpl1"),
-                  label   = strong("Column for Sample 1 (e.g. Before, Pre-Treatment, Baseline)"),
+                  label   = strong("Column for First measurement (e.g. Before, Pre-Treatment, Baseline)"),
                   choices = c(""),
                   options = list(placeholder = 'Select a column',
                                  onInitialize = I('function() { this.setValue(""); }'))),
                 
                 selectizeInput(
                   inputId = ns("signedRankUpl2"),
-                  label   = strong("Column for Sample 2 (e.g. After, Post-Treatment, Follow-Up)"),
+                  label   = strong("Column for Second measurement (e.g. After, Post-Treatment, Follow-Up)"),
                   choices = c(""),
                   options = list(placeholder = 'Select a column',
                                  onInitialize = I('function() { this.setValue(""); }'))),
@@ -5048,11 +5048,11 @@ statInfrServer <- function(id) {
                      linetype = "dotted",
                      linewidth = 0.75,
                      color='black') +
-        geom_text(data = filter(df, x %in% c(0)),
-                  aes(x = x, y = y/2, label = "A R"),
-                  size = 16 / .pt,
-                  check_overlap = TRUE,
-                  fontface = "bold") +
+        # geom_text(data = filter(df, x %in% c(0)),
+        #           aes(x = x, y = y/2, label = "A R"),
+        #           size = 16 / .pt,
+        #           check_overlap = TRUE,
+        #           fontface = "bold") +
         geom_text(data = filter(df, x %in% c(0)),
                   aes(x = x, y = 0, label = "0"),
                   size = 14 / .pt,
@@ -5135,10 +5135,10 @@ statInfrServer <- function(id) {
                      linetype = "dotted",
                      linewidth = 0.75,
                      color='black') +
-        geom_text(data = filter(df, x %in% c(0)),
-                  aes(x = x, y = y/2, label = "A R"),
-                  size = 16 / .pt,
-                  fontface = "bold") +
+        # geom_text(data = filter(df, x %in% c(0)),
+        #           aes(x = x, y = y/2, label = "A R"),
+        #           size = 16 / .pt,
+        #           fontface = "bold") +
         geom_text(data = filter(df, x %in% c(0)),
                   aes(x = x, y = 0, label = "0"),
                   size = 14 / .pt,
@@ -5246,10 +5246,10 @@ statInfrServer <- function(id) {
                      linewidth = 0.75,
                      color='black') +
         
-        geom_text(data = centerDF,
-                  aes(x = x, y = y/2, label = "AR"),
-                  size = 16 / .pt,
-                  fontface = "bold") +
+        # geom_text(data = centerDF,
+        #           aes(x = x, y = y/2, label = "A R"),
+        #           size = 16 / .pt,
+        #           fontface = "bold") +
         
         geom_text(data = centerDF,
                   aes(x = x, y = 0, label = "0"),
@@ -7850,8 +7850,8 @@ statInfrServer <- function(id) {
       
       if(!signedRankUploadvars_iv$is_valid()) {
         validate(
-          need(input$signedRankUpl1, "Please select a column for Sample 1 (e.g. Before, Pre-Treatment, Baseline)."),
-          need(input$signedRankUpl2, "Please select a column for Sample 2 (e.g. After, Post-Treatment, Follow-Up)."),
+          need(input$signedRankUpl1, "Please select a column for First measurement (e.g. Before, Pre-Treatment, Baseline)."),
+          need(input$signedRankUpl2, "Please select a column for Second measurement (e.g. After, Post-Treatment, Follow-Up)."),
           need(CheckSignedRankUploadSamples() == 0, "Sample 1 and Sample 2 must contain the same number of observations."),
           errorClass = "myClass")
         
@@ -7939,8 +7939,8 @@ statInfrServer <- function(id) {
       
       if(!depmeansuploadvars_iv$is_valid()) {
         validate(
-          need(input$depMeansUplSample1, "Please select a column for Sample 1 (e.g. Before, Pre-Treatment, Baseline)."),
-          need(input$depMeansUplSample2, "Please select a column for Sample 2 (e.g. After, Post-Treatment, Follow-Up)."),
+          need(input$depMeansUplSample1, "Please select a column for First measurement (e.g. Before, Pre-Treatment, Baseline)."),
+          need(input$depMeansUplSample2, "Please select a column for Second measurement (e.g. After, Post-Treatment, Follow-Up)."),
           need(CheckDepUploadSamples() == 0, "Sample 1 and Sample 2 must contain the same number of observations."),
           errorClass = "myClass")
        
@@ -12265,12 +12265,12 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
                   fontface = "bold",
                   nudge_y = .075,
                   check_overlap = TRUE) +
-        geom_text(data = arLabelDF,
-                  aes(x = x, y = 0, label = "A R"),
-                  size = 16 / .pt,
-                  fontface = "bold",
-                  vjust = -4,
-                  check_overlap = TRUE) +
+        # geom_text(data = arLabelDF,
+        #           aes(x = x, y = 0, label = "A R"),
+        #           size = 16 / .pt,
+        #           fontface = "bold",
+        #           vjust = -4,
+        #           check_overlap = TRUE) +
         geom_text(data = rrLabelDF,
                   aes(x = x, y = y, label = "RR"),
                   size = 16 / .pt,
@@ -12884,12 +12884,12 @@ To resolve: Verify your input data. If success rates are truly 100% across both 
                   fontface = "bold",
                   nudge_y = .075,
                   check_overlap = TRUE) +
-        geom_text(data = arLabelDF,
-                  aes(x = x, y = 0, label = "A R"),
-                  size = 16 / .pt,
-                  fontface = "bold",
-                  vjust = -4,
-                  check_overlap = TRUE) +
+        # geom_text(data = arLabelDF,
+        #           aes(x = x, y = 0, label = "A R"),
+        #           size = 16 / .pt,
+        #           fontface = "bold",
+        #           vjust = -4,
+        #           check_overlap = TRUE) +
         geom_text(data = rrLabelDF,
                   aes(x = x, y = y, label = "RR"),
                   size = 16 / .pt,
