@@ -909,7 +909,6 @@ MLRServer <- function(id, reg_data, reset_upload, upload_error = NULL, clear_tri
           br(),
           sprintf(r"{\( p = %i \)}", a$k)
         ),
-        p(r"[where \(n\) is the sample size and \(p\) is the number of explanatory variables in the multiple regression model.]"),
         if (omitted > 0)
           p(class = "text-muted",
             sprintf("Note: rows with a missing value in the response or an explanatory variable are left out of the model (%s of %s rows).",

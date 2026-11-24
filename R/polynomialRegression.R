@@ -1464,6 +1464,7 @@ PolynomialRegressionServer <- function(id, reg_data, input_mode, reset_upload, u
       par(font.main = 2, font.lab = 2)
       plot(model, which = 3, pch = 20, main = "", lwd = 2, sub.caption = "", caption = "", ann = FALSE)
       title(main = "Scale-Location", cex.main = 1.2)
+      title(xlab = expression(bold(Fitted~Values~(hat(italic(y))))))
       title(ylab = "sqrt(|Standardized Residuals|)")
     })
 
