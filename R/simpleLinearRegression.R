@@ -1780,6 +1780,7 @@ SLRServer <- function(id, reg_data, input_mode, reset_upload, upload_error = NUL
       par(font.main = 2, font.lab = 2)
       plot(model, which = 3, pch = 20, main = "", lwd = 2, sub.caption = "", caption = "", ann = FALSE)
       title(main = "Scale-Location", cex.main = 1.2)
+      title(xlab = expression(bold(Fitted~Values~(hat(italic(y))))))
       title(ylab = "sqrt(|Standardized Residuals|)")
     })
 
@@ -3095,6 +3096,8 @@ SLRServer <- function(id, reg_data, input_mode, reset_upload, upload_error = NUL
           p(sprintf(
             "\\( \\qquad \\hat{y}_0 \\pm t_{\\alpha/2,\\, n-2} \\sqrt{MSE \\left( \\dfrac{1}{n} + \\dfrac{(x_0 - \\bar{x})^2}{SS_x} \\right)} \\)"
           )),
+          p("where"),
+          p("\\( \\qquad SS_x = \\sum x^2 - \\dfrac{\\left(\\sum x\\right)^2}{n} \\)"),
           br(),
           p("Substitute"),
           p(sprintf(
@@ -3122,6 +3125,8 @@ SLRServer <- function(id, reg_data, input_mode, reset_upload, upload_error = NUL
           p(sprintf(
             "\\( \\qquad \\hat{y}_0 \\pm t_{\\alpha/2,\\, n-2} \\sqrt{MSE \\left( 1 + \\dfrac{1}{n} + \\dfrac{(x_0 - \\bar{x})^2}{SS_x} \\right)} \\)"
           )),
+          p("where"),
+          p("\\( \\qquad SS_x = \\sum x^2 - \\dfrac{\\left(\\sum x\\right)^2}{n} \\)"),
           br(),
           p("Substitute"),
           p(sprintf(
