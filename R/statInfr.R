@@ -7822,7 +7822,7 @@ statInfrServer <- function(id) {
         if(length(createNumLst(input$signedRankRaw1)) == length(createNumLst(input$signedRankRaw2))) {
           differences <- createNumLst(input$signedRankRaw1) - createNumLst(input$signedRankRaw2)
           validate(
-            need(!all(differences == 0) && var(differences) != 0, "'Sample 1' and 'Sample 2' data are the same. In the Wilcoxon Signed Rank Test the pairs with a difference of zero are dropped.  The effective sample size is now zero. Please check your data."),
+            need(!all(differences == 0) && var(differences) != 0, "The first and second measurements are identical. Every paired difference is zero, and the Wilcoxon Signed Rank Test drops pairs with a difference of zero, so no pairs remain to analyze. Please check that you entered the correct values in each field."),
             errorClass = "myClass")
         }
       }
@@ -7879,7 +7879,7 @@ statInfrServer <- function(id) {
             validate(
               need(
                 !all(differences == 0) && var(differences) != 0,
-                "'Sample 1' and 'Sample 2' data are the same. In the Wilcoxon Signed Rank Test the pairs with a difference of zero are dropped. The effective sample size is now zero. Please check your data."
+                "The first and second measurements are identical. Every paired difference is zero, and the Wilcoxon Signed Rank Test drops pairs with a difference of zero, so no pairs remain to analyze. Please check that you entered the correct values in each field."
               ),
               errorClass = "myClass")
           }
