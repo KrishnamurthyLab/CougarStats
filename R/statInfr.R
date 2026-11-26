@@ -1457,6 +1457,18 @@ statInfrUI <- function(id) {
                 choices  = c("Exact", "Normal approximation (for large samples)"),
                 selected = "Normal approximation (for large samples)",
                 inline   = TRUE),
+              
+              #The below radioButton toggle for continuity correction in a Wilcoxon Signed Rank Test
+              #was added on November 26, 2026. Revisit this and fix the code.
+              # conditionalPanel(
+              #   ns = ns,
+              #   condition  = "input.normaprowrs == 'Normal approximation (for large samples)'", # This is the inner condition, checking the checkbox
+              #   radioButtons(
+              #     inputId  = ns("continuityCorrectionOptionSignedRank"),
+              #     label    = strong("Continuity correction"),
+              #     choices  = c("True", "False"),
+              #     selected = "True", # 'selected' argument takes a single value, not a vector
+              #     inline   = TRUE ))
             ),
             conditionalPanel(
               ns = ns,
