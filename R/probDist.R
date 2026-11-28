@@ -7,6 +7,7 @@ probDistUI <- function(id) {
   ns <- NS(id)
   
   tagList(
+    withMathJax(),
     sidebarLayout(
       #  ========================================================================== #  
       ## -------- Sidebar Panel --------------------------------------------------- 
@@ -22,13 +23,20 @@ probDistUI <- function(id) {
           radioButtons(
             inputId  = ns("probability"), 
             label    = NULL, 
-            choices  = c("Contingency Table",
-                         "Binomial", 
-                         "Poisson",
-                         "Hypergeometric",
-                         "Negative Binomial",
-                         "Normal",
-                         "Student's t"), 
+            choiceNames = list("Contingency Table",
+                               "Binomial",
+                               "Poisson",
+                               "Hypergeometric",
+                               "Negative Binomial",
+                               "Normal",
+                               HTML("Student's \\(t\\)")),
+            choiceValues = c("Contingency Table",
+                             "Binomial",
+                             "Poisson",
+                             "Hypergeometric",
+                             "Negative Binomial",
+                             "Normal",
+                             "t Distribution"),
             selected =  NULL,
             inline   = FALSE),
           
@@ -61,8 +69,9 @@ probDistUI <- function(id) {
                                     dimnames = list(c("R1", "R2"), 
                                                     c("C1", "C2"))),
                 rows       = list(editableNames = TRUE),
-                cols       = list(editableNames = TRUE)),
-            ), 
+                cols       = list(editableNames = TRUE)
+                )
+            ),
             
             conditionalPanel(
               ns = ns,
@@ -76,7 +85,8 @@ probDistUI <- function(id) {
                                     dimnames = list(c("R1", "R2"), 
                                                     c("C1", "C2", "C3"))),
                 rows       = list(editableNames = TRUE),
-                cols       = list(editableNames = TRUE)),
+                cols       = list(editableNames = TRUE)
+                )
             ), 
             
             conditionalPanel(
@@ -91,7 +101,8 @@ probDistUI <- function(id) {
                                     dimnames = list(c("R1", "R2", "R3"), 
                                                     c("C1", "C2"))),
                 rows       = list(editableNames = TRUE),
-                cols       = list(editableNames = TRUE)),
+                cols       = list(editableNames = TRUE)
+                )
             ), 
             
             conditionalPanel(
@@ -106,7 +117,8 @@ probDistUI <- function(id) {
                                     dimnames = list(c("R1", "R2", "R3"), 
                                                     c("C1", "C2", "C3"))),
                 rows       = list(editableNames = TRUE),
-                cols       = list(editableNames = TRUE)),
+                cols       = list(editableNames = TRUE)
+                )
             ), 
             
             # Radio buttons to select the type of probability to calculate
@@ -128,7 +140,7 @@ probDistUI <- function(id) {
             actionButton(
               inputId = ns("resetcTable"), 
               label   = "Reset Values",
-              class   = "act-btn"),
+              class   = "act-btn")
           ), 
           
           ### ------------ Binomial -----------------------------------------------------
@@ -182,7 +194,7 @@ probDistUI <- function(id) {
                 value   = 2, 
                 min     = 0, 
                 step    = 1)
-            ), 
+            ),
             
             # Inputs for a range of successes (x1 to x2)
             conditionalPanel(
@@ -225,7 +237,9 @@ probDistUI <- function(id) {
             numericInput(
               inputId = ns("lambdaPoisson"), 
               label   = strong("Average (\\( \\lambda\\))"),
-              value   = 4.5),
+              value   = 4.5,
+              min  = 0.00001,
+              step = 0.00001),
             
             HTML("<label class='si-label'><b>Probability</b></label>"),                                                            
             radioButtons(
@@ -416,13 +430,12 @@ probDistUI <- function(id) {
                               #    "trials"),
               choiceNames = list("Number of failures prior to the \\(r^{th}\\) success"),
                               #   "Trials until (and including) the \\(r^{th}\\) success"),
-              inline = TRUE,
+              inline = TRUE
             ),
             
             conditionalPanel(
               ns = ns,
               condition = "input.calcNegBin != 'between'",
-              
               
               conditionalPanel(
                 ns = ns,
@@ -434,7 +447,6 @@ probDistUI <- function(id) {
                   value   = 4,
                   min     = 0,
                   step    = 1)
-                
               ),
               
               conditionalPanel(
@@ -447,7 +459,7 @@ probDistUI <- function(id) {
                   value   = 4,
                   min     = 0,
                   step    = 1)
-              ),
+              )
             ),
             
             actionButton(
@@ -478,7 +490,7 @@ probDistUI <- function(id) {
               inputId = ns("popSD"),
               label   = strong("Population Standard Deviation (\\( \\sigma\\))"),
               value   = 15, 
-              min     = 0, 
+              min     = 0.00001, 
               step    = 0.00001),
             
             radioButtons(
@@ -522,7 +534,7 @@ probDistUI <- function(id) {
                     inputId = ns("xValue"),
                     label   = strong("Normally Distributed Variable (\\( x\\))"),
                     value   = 135, 
-                    step    = 0.00001),
+                    step    = 0.00001)
                 ), 
                 
                 conditionalPanel(
@@ -539,8 +551,8 @@ probDistUI <- function(id) {
                     inputId = ns("x2Value"),
                     label   = strong("Normally Distributed Variable (\\( x_{2}\\))"),
                     value   = 145, 
-                    step    = 0.00001),
-                ), 
+                    step    = 0.00001)
+                ) 
               ), 
               
               conditionalPanel(
@@ -590,8 +602,9 @@ probDistUI <- function(id) {
                 numericInput(
                   inputId = ns("sampDistrSize"),
                   label   = strong("Sample Size (\\( n\\))"),
-                  value   = 10, 
-                  step    = 1),
+                  value   = 10,
+                  min    = 1,
+                  step    = 1)
               ), 
               
               actionButton(
@@ -633,7 +646,7 @@ probDistUI <- function(id) {
                   align         = 'left',
                   suffixText    = '%',
                   wheelOn       = 'hover',
-                  wheelStep     = 1),
+                  wheelStep     = 1)
               ), 
               
               actionButton(
@@ -645,20 +658,21 @@ probDistUI <- function(id) {
                 inputId = ns("resetNormalQuan"), 
                 label   = "Reset Values",
                 class   = "act-btn") 
-            ), 
+            ) 
           ),
+          
           ### ------------ Student's t -------------------------------------------------------
           
           conditionalPanel(
             ns = ns,
             id = ns("studentTPanel"),
-            condition = "input.probability == \"Student's t\"",
+            condition = "input.probability == 't Distribution'",
           
             numericInput(
               inputId = ns("dfStudentT"),
               label   = strong("Degrees of freedom (\\( df\\))"),
               value   = 30,
-              min     = 1,
+              min     = 0.00001,
               step    = 0.00001),
             
             radioButtons(
@@ -677,7 +691,7 @@ probDistUI <- function(id) {
              # HTML("<label class='si-label'><b>Probability</b></label>"),
               radioButtons(
                 inputId      = ns("calcStudentT"),
-                label        = strong("Probability"), 
+                label        = strong("Probability Type"), 
                 choiceValues = list("cumulative", 
                                     "upperTail", 
                                     "between"),
@@ -692,9 +706,9 @@ probDistUI <- function(id) {
                 
                 numericInput(
                   inputId = ns("tStudentT"),
-                  label   = strong("t Distributed Variable (\\( x\\))"),
+                  label   = strong("\\(t\\) Distributed Variable (\\( x\\))"),
                   value   = 1.697, 
-                  step    = 0.00001),
+                  step    = 0.00001)
               ), 
               
               conditionalPanel(
@@ -712,7 +726,7 @@ probDistUI <- function(id) {
                   label   = strong("t Distributed Variable (\\( x_{2}\\))"),
                   value   = 2.101, 
                   step    = 0.00001)
-              ), 
+              ) 
             ), # probability panel
             
             conditionalPanel(
@@ -726,8 +740,8 @@ probDistUI <- function(id) {
                min     = 0,
                max     = 1,
                step    = 0.00001)
-             
             ), # Critical Value panel
+            
             actionButton(
               inputId = ns("goStudentT"), 
               label   = "Calculate",
@@ -737,8 +751,8 @@ probDistUI <- function(id) {
               inputId = ns("resetStudentT"), 
               label   = "Reset Values",
               class = "act-btn") 
-          ), # student's T panel
-        ), 
+          ) # student's T panel
+        ) 
       ), 
       
       #  ========================================================================== #  
@@ -804,7 +818,8 @@ probDistUI <- function(id) {
                            condition = "input.cTableProb == 'Conditional'",
                            uiOutput(ns('renderConditionalProbs'))
                          ) 
-              ))
+                    )
+                )
             ), 
             
             ### ------------ Binomial -----------------------------------------------------
@@ -854,10 +869,7 @@ probDistUI <- function(id) {
                         tags$i(class = "fa fa-clipboard"),
                         "Copy to Clipboard"
                       )
-                     
-                    ),
-                    
-
+                    )
                   )
                 )
               )
@@ -883,9 +895,10 @@ probDistUI <- function(id) {
                                     tabPanel(title = "Probability Distribution Table",
                                              DTOutput(ns("poissDistrTable"), width = "25%")
                                     )
-                         )
-              ))
-            ), 
+                             )
+                        )
+                  )
+            ),
             
             ### ------------ Hypergeometric --------------------------------------------
             conditionalPanel(
@@ -920,10 +933,11 @@ probDistUI <- function(id) {
                                                ),
                                                tags$i(class = "fa fa-clipboard"),
                                                "Copy to Clipboard"
-                                             ),
+                                             )
                                     )
-                         )
-              ))
+                            )
+                    )
+              )
             ), 
             
             ### ------------ Negative Binomial --------------------------------------------
@@ -939,7 +953,8 @@ probDistUI <- function(id) {
                            outputId = "rcodeNegBin",
                            ns = ns
                          )
-              ))
+                  )
+              )
             ), 
             
             ### ------------ Normal -------------------------------------------------------
@@ -963,7 +978,7 @@ probDistUI <- function(id) {
                              ns = ns,
                              condition = "input.sampMeanDistr == 1",
                              
-                             uiOutput(ns("renderSampMeanDistr"))),
+                             uiOutput(ns("renderSampMeanDistr")))
                          ), 
                          
                          conditionalPanel(
@@ -980,22 +995,22 @@ probDistUI <- function(id) {
                              ns = ns,
                              condition = "input.calcQuartiles == 'Percentile'",
                              
-                             uiOutput(ns("renderNormPercentile"))), 
+                             uiOutput(ns("renderNormPercentile")))
                          ), 
                          codeBox(
                            boxId = "rcodeNormalBox",
                            outputId = "rcodeNormal",
                            ns = ns
                          ),
-                         
-                         br()
-              ))
-            ) ,
+                    br()
+                )
+              )
+            ),
             
             ### ------------ Student's T -------------------------------------------------------
             conditionalPanel(
               ns = ns,
-              condition = "input.probability == \"Student's t\"",
+              condition = "input.probability == 't Distribution'",
               hidden(div(id = ns("studentTResults"),
                   br(),
                   # Probability calculation results
@@ -1035,7 +1050,11 @@ probDistUI <- function(id) {
                     
                     uiOutput(ns("renderCriticalValueStudentTPlot"))
                   ),
-                  br())))), 
+                  br()
+              )
+            )
+          )
+        ) 
       ) 
     ) 
   ) 
@@ -1350,17 +1369,17 @@ probDistServer <- function(id) {
                                        input$calcQuantiles == 'Critical Value' &&
                                        input$calcQuartiles == 'Percentile'))
     
-    studentt_iv$condition(~ isTRUE(input$probability == "Student's t"))
+    studentt_iv$condition(~ isTRUE(input$probability == "t Distribution"))
     
-    studenttprob_iv$condition(~ isTRUE(input$probability == "Student's t" &&
+    studenttprob_iv$condition(~ isTRUE(input$probability == "t Distribution" &&
                                          input$calcTypeStudentT == "Probability" &&
                                          input$calcStudentT != "between"))
     
-    studenttbetween_iv$condition(~ isTRUE(input$probability == "Student's t" &&
+    studenttbetween_iv$condition(~ isTRUE(input$probability == "t Distribution" &&
                                             input$calcTypeStudentT == "Probability" &&
                                             input$calcStudentT == "between"))
     
-    studenttcritical_iv$condition(~ isTRUE(input$probability == "Student's t" &&
+    studenttcritical_iv$condition(~ isTRUE(input$probability == "t Distribution" &&
                                              input$calcTypeStudentT == "Critical Value"))
     
     ctable_iv$add_validator(ctable2x2_iv)
@@ -1639,6 +1658,9 @@ probDistServer <- function(id) {
       }
     }
     
+    # Unused helper function:labelNormZArea() is never called anywhere in the file
+    # Could this be removed?
+    
     labelNormZArea <- function(probVal, probType, normLines){
       req(pd_valid())
       if(probType == 'cumulative') {
@@ -1812,7 +1834,7 @@ probDistServer <- function(id) {
   "Empty cells, decimal values, negative numbers,",
   "and non-numeric entries are not permitted."
 )
-    
+   
     cMatrixData2x2 <- reactive({
       suppressWarnings(as.numeric(input$cMatrix2x2))
     })
@@ -2211,7 +2233,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>%
+                filter = "none") %>%
         formatStyle(columns = c(0,3),
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:3,
@@ -2238,7 +2260,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,3), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:3,
@@ -2264,7 +2286,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,4), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:4,
@@ -2291,7 +2313,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,4), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:4,
@@ -2317,7 +2339,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,3), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:3,
@@ -2344,7 +2366,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,3), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:3,
@@ -2370,7 +2392,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,4), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:4,
@@ -2397,7 +2419,7 @@ probDistServer <- function(id) {
                 ),
                 selection = "none",
                 escape = FALSE,
-                filter = "none",) %>% 
+                filter = "none") %>% 
         formatStyle(columns = c(0,4), 
                     fontWeight = 'bold') %>%
         formatStyle(columns = 1:4,
@@ -2520,7 +2542,6 @@ probDistServer <- function(id) {
         }
         else
         {
-          req(pd_valid())
           binom_n <- input$numTrialsBinom
           binom_p <- input$successProbBinom
           binom_mu <- round(binom_n * binom_p, 4)
@@ -2868,7 +2889,6 @@ probDistServer <- function(id) {
         }
         else
         {
-          req(pd_valid())
           poisson_lambda <- input$lambdaPoisson
           poisson_sd <- round(sqrt(input$lambdaPoisson), 4)
           
@@ -3093,8 +3113,6 @@ probDistServer <- function(id) {
       }
     }, server = FALSE)
     
-
-    
     # Hypergeometric results: outputs and code box are defined once (not on every click)
     # Code box: created once, active after the first Calculate click. It is shown
     # when the inputs are valid for the selected probability type (hypgeo_state);
@@ -3268,7 +3286,6 @@ probDistServer <- function(id) {
             ) 
           ) 
         }
-      
     }) 
     
     output$rcodeHypGeo <- renderUI({
@@ -3648,7 +3665,6 @@ probDistServer <- function(id) {
           showBox <- TRUE
         }
       }
-      
       setCodeBox(showBox, "rcodeNormalBox")
     })
     
@@ -3935,9 +3951,7 @@ probDistServer <- function(id) {
       }
       normZPlot(getMeanNormValue(), normLines, input$calcNormSampDistr)
     })
-    
-  
-    
+
     # Normal critical value results: outputs are defined once (not on every click)
     
     output$renderNormQuartiles <- renderUI({
@@ -4221,8 +4235,8 @@ probDistServer <- function(id) {
                                  percentile),
                          br(),
                          br(),
-                         br(),
-                     ),
+                         br()
+                     )
               ),
               column(width = 7,
                      plotOutput(session$ns("percentilePlot"), height = "300px"),
@@ -4230,7 +4244,8 @@ probDistServer <- function(id) {
                      br())
             )
           ),
-          br())
+          br()
+        )
       )
     })
     
@@ -4244,7 +4259,7 @@ probDistServer <- function(id) {
     # active after the first Calculate click
     observe({
       req(calculated$studentT)
-      req(input$probability == "Student's t")
+      req(input$probability == "t Distribution")
       
       showBox <- FALSE
       if(studentt_iv$is_valid()) {
@@ -4293,7 +4308,7 @@ probDistServer <- function(id) {
           errorClass = "myClass"
         )
       }
-      req(input$probability == "Student's t")
+      req(input$probability == "t Distribution")
       
       if(input$calcTypeStudentT == "Probability") {
         df <- input$dfStudentT
@@ -4336,7 +4351,7 @@ probDistServer <- function(id) {
     output$renderProbabilityStudentTPlot <- renderUI({
       req(calculated$studentT)
       req(studentt_iv$is_valid())
-      req(input$probability == "Student's t")
+      req(input$probability == "t Distribution")
       req(input$calcTypeStudentT == "Probability")
       if(input$calcStudentT == "between") {
         req(isTRUE(input$t1StudentT < input$t2StudentT))
@@ -4351,7 +4366,6 @@ probDistServer <- function(id) {
         )
       )
     })
-    
     
     output$renderCriticalValueStudentT <- renderUI({
       req(input$goStudentT > 0)
@@ -4385,7 +4399,7 @@ probDistServer <- function(id) {
             div(h3(sprintf("Calculating the critical value when \\(X \\sim t(df = %g)\\):", df)),
               hr(),
               br(),
-              sprintf("\\(\\displaystyle t_{area,df}=t_{%g,%g}=%s\\)", p, df, sprintf("%.4f", tCritical)),
+              sprintf("\\(\\displaystyle t_{\\text{area},df}=t_{%g,%g}=%s\\)", p, df, sprintf("%.4f", tCritical))
             ),
             br()
             )
@@ -4410,7 +4424,7 @@ probDistServer <- function(id) {
     
     output$studentTDistrPlot <- renderPlot({
       req(pd_valid())
-      req(input$probability == "Student's t")
+      req(input$probability == "t Distribution")
       req(input$calcTypeStudentT == "Probability")
       
       if(input$calcStudentT == "cumulative") {
@@ -4436,7 +4450,7 @@ probDistServer <- function(id) {
     
     output$studentTCriticalPlot <- renderPlot({
       req(pd_valid())
-      req(input$probability == "Student's t")
+      req(input$probability == "t Distribution")
       req(input$calcTypeStudentT == "Critical Value")
       
       tCritical <- qt(input$probStudentT, input$dfStudentT)
